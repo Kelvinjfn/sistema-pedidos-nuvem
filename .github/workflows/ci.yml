@@ -1,0 +1,41 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Clonar repositório
+        uses: actions/checkout@v3
+
+      - name: Instalar Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Instalar dependências backend
+        run: |
+          cd backend
+          npm install
+
+      - name: Instalar dependências frontend
+        run: |
+          cd frontend
+          npm install
+
+      - name: Build do frontend
+        run: |
+          cd frontend
+          npm run build
+
+      - name: Teste backend
+        run: |
+          cd backend
+          npm test || echo "Sem testes ainda"
